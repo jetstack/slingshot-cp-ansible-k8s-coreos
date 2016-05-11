@@ -8,17 +8,20 @@
     pip: name=httplib2
 
 - hosts: etcd
-  sudo: yes
+  become: yes
+  become_user: root
   roles:
   - etcd-node
-    
+
 - hosts: master
-  sudo: yes
+  become: yes
+  become_user: root
   roles:
   - kubernetes-master
 
 - hosts: minions
-  sudo: yes
+  become: yes
+  become_user: root
   roles:
   - kubernetes-worker
 
