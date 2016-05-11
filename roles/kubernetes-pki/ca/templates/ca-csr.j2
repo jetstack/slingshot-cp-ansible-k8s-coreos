@@ -1,0 +1,19 @@
+{
+  "CN": "Kubernetes {{ CLUSTER_NAME }} CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "ca": {
+    "expiry": "87660h"
+  },
+  "names": [
+    {
+      "C": "{{ pki_country }}",
+      "L": "{{ pki_locality }}",
+      "O": "{{ pki_organisation }}",
+      "OU": "{{ pki_organisational_unit }}",
+      "ST": "{{ pki_state }}"
+    }
+  ]
+}

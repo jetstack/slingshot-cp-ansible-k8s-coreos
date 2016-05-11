@@ -7,6 +7,10 @@
   - name: install httplib2
     pip: name=httplib2
 
+- hosts: kubernetes
+  roles:
+  - kubernetes-pki
+
 - hosts: etcd
   become: yes
   become_user: root

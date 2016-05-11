@@ -1,0 +1,5 @@
+pki_country: GB
+pki_state: London
+pki_locality: London
+pki_organisation: Kubernetes
+pki_organisational_unit: CA
