@@ -8,7 +8,8 @@ ExecStart=/opt/local/bin/kubelet \
   --register-node=false \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
-  --hostname-override={{ansible_default_ipv4.address}} \
+  --hostname-override={{default_address}} \
+  --node-labels="role=master,version={{kube_version}}" \
   --cluster-dns={{DNS_SERVICE_IP}} \
   --cluster-domain=cluster.local \
   --cloud-provider={{CLOUD_PROVIDER}} \

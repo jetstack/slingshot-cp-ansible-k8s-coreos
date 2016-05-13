@@ -1,0 +1,78 @@
+---
+
+default_interface: "{{ ansible_default_ipv4.interface }}"
+private_address: "{{ ansible_eth1.ipv4.address }}"
+
+kube_version: 1.2.4
+
+# Unique token for your etcd cluster. Change when making a new cluster.
+ETCD_INITIAL_CLUSTER_TOKEN: mycluster
+
+# URL for the API server (IP is of the master's machine)
+MASTER_URL: https://10.251.0.10
+
+# Name of the cluster
+CLUSTER_NAME: cluster1
+
+# Name of cloud provider (can be left empty)
+CLOUD_PROVIDER: aws
+
+# The name of the Ansible group where all the etcd machines belong.
+# Used by etcd-node.
+ETCD_ANSIBLE_GROUP: etcd
+
+KUBERNETES_VERSION: 1.2.4
+
+# List all the etcd client endpoints. Used by flannel and the master.
+# We are not re-using ETCD_ANSIBLE_GROUP
+# here, since a playbook forgroup since these could be private IPs (and we do
+# not gather facts for that group)
+ETCD_HOSTS:
+- http://10.251.0.10:2379
+- http://10.251.0.11:2379
+
+# Local directory (on the machine running ansible) where the TLS certificates
+# are found.
+# The directory should contain the following files:
+# - ca.pem: certificate authority public certificate.
+# - apiserver.pem: public certificate of the API server.
+# - apiserver-key.pem: private key of the API server.
+# - worker.pem: public certificate of the minion.
+# - worker-key.pem: private key of the minion.
+# - admin-user.pem: public certificate of an admin-user user.
+# - admin-user-key.pem: private key of the admin-user user.
+LOCAL_SSL_DIR: /ansible/test-kube-tls
+
+# OPTIONAL: Public IP of the API server. This is used by the certificate
+# generation code to add this IP address to the certificate.
+MASTER_PUBLIC_HOST: 52.26.12.13
+
+# --------------------------------------------
+# DEFAULT VALUES THAT YOU DO NOT HAVE TO TOUCH
+# --------------------------------------------
+
+# Setup kubeconfig on core's directory on master.
+SETUP_KUBECONFIG_ON_MASTER: yes
+
+# IP subnet for pods (via flannel)
+POD_NETWORK: 10.2.0.0/16
+
+# IP subnet for services (via flannel)
+SERVICE_IP_RANGE: 10.3.0.0/16
+
+# Kubernetes API server - service address.
+K8S_SERVICE_IP: 10.3.0.1
+
+# Kubernetes DNS server - service address.
+DNS_SERVICE_IP: 10.3.0.10
+
+# Hyperkube is an all in one docker image that contains an apiserver,
+# kubeproxy and various other binaries.
+HYPERKUBE_IMAGE: gcr.io/google_containers/hyperkube:v1.2.4
+
+# Path to download kubelet from.
+KUBELET_BINARY: https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubectl
+
+# Path to download kubectl form.
+KUBECTL_BINARY: https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubectl
+
