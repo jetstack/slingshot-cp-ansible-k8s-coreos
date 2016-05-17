@@ -71,7 +71,7 @@ DNS_SERVICE_IP: 10.3.0.10
 HYPERKUBE_IMAGE: gcr.io/google_containers/hyperkube:v1.2.4
 
 # Path to download kubelet from.
-KUBELET_BINARY: https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubectl
+KUBELET_BINARY: https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubelet
 
 # Path to download kubectl form.
 KUBECTL_BINARY: https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubectl
