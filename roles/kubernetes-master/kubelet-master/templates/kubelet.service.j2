@@ -4,7 +4,7 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
 ExecStart=/opt/local/bin/kubelet \
-  --api_servers=http://127.0.0.1:8080 \
+  --api-servers=http://127.0.0.1:8080 \
   --register-node=false \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
