@@ -1,8 +1,8 @@
 ---
 dependencies:
+- kubernetes-master/flannel-config
 - kubernetes-common/flannel
 - kubernetes-master/master-keys
-- kubernetes-master/flannel-config
 - kubernetes-master/kubelet-master
 - kubernetes-master/kube-apiserver
 - kubernetes-master/kube-proxy-master
