@@ -15,7 +15,7 @@ MASTER_URL: https://10.251.0.10
 CLUSTER_NAME: cluster1
 
 # Name of cloud provider (can be left empty)
-CLOUD_PROVIDER: aws
+CLOUD_PROVIDER: ""
 
 # The name of the Ansible group where all the etcd machines belong.
 # Used by etcd-node.
