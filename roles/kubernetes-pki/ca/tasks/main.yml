@@ -34,7 +34,10 @@
 - name: CA | generate key pairs
   include: cert.yml
   with_items:
-  - apiserver
-  - admin
-  - worker
+  - name: apiserver
+    profile: server
+  - name: admin-user
+    profile: client
+  - name: worker
+    profile: client
 
