@@ -21,6 +21,7 @@ spec:
     - --tls-cert-file=/etc/kubernetes/ssl/apiserver.pem
     - --tls-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
     - --client-ca-file=/etc/kubernetes/ssl/ca.pem
+    - --runtime-config=extensions/v1beta1=true,extensions/v1beta1/thirdpartyresources=true
     - --service-account-key-file=/etc/kubernetes/ssl/apiserver-key.pem
 {% if CLOUD_PROVIDER %}
     - --cloud-provider={{CLOUD_PROVIDER}}

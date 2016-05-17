@@ -6,8 +6,6 @@ dependencies:
 - kubernetes-master/kubelet-master
 - kubernetes-master/kube-apiserver
 - kubernetes-master/kube-proxy-master
-- kubernetes-master/kube-podmaster
 - kubernetes-master/kube-controller-manager
 - kubernetes-master/kube-scheduler
 - kubernetes-master/admin-user
-
