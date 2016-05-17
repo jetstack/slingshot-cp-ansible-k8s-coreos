@@ -12,7 +12,7 @@ spec:
     - /podmaster
     - --etcd-servers={{ETCD_HOSTS|join(',')}}
     - --key=scheduler
-    - --whoami={{default_address}}
+    - --whoami={{private_address}}
     - --source-file=/src/manifests/kube-scheduler.yaml
     - --dest-file=/dst/manifests/kube-scheduler.yaml
     volumeMounts:
@@ -27,7 +27,7 @@ spec:
     - /podmaster
     - --etcd-servers={{ETCD_HOSTS|join(',')}}
     - --key=controller
-    - --whoami={{default_address}}
+    - --whoami={{private_address}}
     - --source-file=/src/manifests/kube-controller-manager.yaml
     - --dest-file=/dst/manifests/kube-controller-manager.yaml
     terminationMessagePath: /dev/termination-log
