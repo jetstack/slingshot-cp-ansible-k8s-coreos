@@ -1,0 +1,22 @@
+- set_fact:
+    kubernetes: >
+      {{ kubernetes | default({}) | combine(
+        {
+          'serviceIpApi': kubernetes['serviceNetwork'] | ipaddr('net') | ipaddr(1) | ipaddr('address'),
+          'serviceIpDns': kubernetes['serviceNetwork'] | ipaddr('net') | ipaddr(10) | ipaddr('address'),
+          'hyperkubeImage': kubernetes['imagePrefix'] + '/hyperkube:v' + kubernetes['version'],
+          'binaryUrl': kubernetes['binaryUrlPrefix'] + '/v' + kubernetes['version'] + '/bin/linux/amd64'
+        }
+      )}}
+    private_address: "{{ ansible_default_ipv4.address }}"
+
+- debug:
+    msg: "etcd: {{ etcd }}"
+
+- debug:
+    msg: "kubernetes: {{ kubernetes }}"
+
+- debug:
+    msg: "default_interface: {{ default_interface }}"
+
+

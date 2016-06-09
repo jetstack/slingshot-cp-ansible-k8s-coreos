@@ -29,7 +29,7 @@
 - name: Checking if DNS service already exists
   tags: dns 
   command: 
-    /opt/local/bin/kubectl 
+    /opt/bin/kubectl 
       --kubeconfig=/home/core/.kube/config 
       --namespace=kube-system
       get svc kube-dns
@@ -39,7 +39,7 @@
 
 - name: Creating DNS service if not exists
   command: 
-    /opt/local/bin/kubectl create 
+    /opt/bin/kubectl create 
       --kubeconfig=/home/core/.kube/config 
       -f /tmp/dns-addon-svc.yaml
   when: '"kube-dns" not in rc.stdout'
@@ -48,7 +48,7 @@
 - name: Checking if DNS replication controller exists
   tags: dns 
   command: 
-    /opt/local/bin/kubectl 
+    /opt/bin/kubectl 
       --kubeconfig=/home/core/.kube/config 
       --namespace=kube-system
       get rc
@@ -58,7 +58,7 @@
 
 - name: Creating DNS replication controller if not exists
   command: 
-    /opt/local/bin/kubectl create 
+    /opt/bin/kubectl create 
       --kubeconfig=/home/core/.kube/config 
       -f /tmp/dns-addon-rc.yaml
   when: '"kube-dns" not in rc.stdout'

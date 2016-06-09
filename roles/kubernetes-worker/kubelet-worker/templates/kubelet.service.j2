@@ -3,19 +3,19 @@ Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
-ExecStart=/opt/local/bin/kubelet \
-  --api-servers={{MASTER_URL}} \
+ExecStart=/opt/bin/kubelet \
+  --api-servers={{kubernetes.masterApiUrl}} \
   --register-node=true \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
   --hostname-override={{private_address}} \
-  --node-labels="role=worker,version={{kube_version}}" \
-  --cluster-dns={{DNS_SERVICE_IP}} \
+  --node-labels="role=worker,version={{kubernetes.version}}" \
+  --cluster-dns={{kubernetes.serviceIpDns}} \
   --cluster-domain=cluster.local \
   --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
   --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
-  --cloud-provider={{CLOUD_PROVIDER}} \
+  --cloud-provider={{kubernetes.cloudProvider}} \
   --cadvisor-port=0
 Restart=always
 RestartSec=10

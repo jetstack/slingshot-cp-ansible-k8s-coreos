@@ -3,15 +3,15 @@ Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
-ExecStart=/opt/local/bin/kubelet \
+ExecStart=/opt/bin/kubelet \
   --api-servers=http://127.0.0.1:8080 \
   --register-schedulable=false \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
   --hostname-override={{private_address}} \
-  --node-labels="role=master,version={{kube_version}}" \
-  --cloud-provider={{CLOUD_PROVIDER}} \
-  --cluster-dns={{DNS_SERVICE_IP}} \
+  --node-labels="role=master,version={{kubernetes.version}}" \
+  --cloud-provider={{kubernetes.cloudProvider}} \
+  --cluster-dns={{kubernetes.serviceIpDns}} \
   --cadvisor-port=0 \
   --cluster-domain=cluster.local
 

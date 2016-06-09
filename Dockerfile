@@ -37,7 +37,6 @@ RUN ansible-galaxy -r requirements.yaml install
 
 COPY cluster.yaml /ansible/code/
 COPY group_vars/coreos.yaml /ansible/code/group_vars/
-COPY group_vars/all.yaml /ansible/code/group_vars/kubernetes.yaml
 COPY roles /ansible/code/
 COPY run.py /ansible/run.py
 

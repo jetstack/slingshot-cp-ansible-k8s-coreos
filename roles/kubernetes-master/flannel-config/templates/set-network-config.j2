@@ -1,1 +1,1 @@
-value={"Network":"{{POD_NETWORK}}","Backend":{"Type":"vxlan"}}
+value={"Network": "{{ kubernetes.flannel.subnet | default('172.16.0.0')}}/{{ kubernetes.flannel.prefix | default('16') }}", "SubnetLen": {{ kubernetes.flannel.hostPrefix | default('24') }},"Backend":{"Type":"{{ kubernetes.flannel.backend | default('vxlan') }}"}}

@@ -1,19 +1,18 @@
-- name: Create /opt/local/bin
-  file: name=/opt/local/bin state=directory
+- name: Create /opt/bin
+  file: name=/opt/bin state=directory
 
 - name: Download kubectl binary
-  get_url: url={{KUBECTL_BINARY}} dest=/opt/local/bin/kubectl-{{KUBERNETES_VERSION}} mode=0755
+  get_url: url={{ kubernetes.binaryUrl }}/kubectl dest=/opt/bin/kubectl-{{ kubernetes.version }} mode=0755
 
 - name: Setting up symbolic link to binary;
-  file: src=/opt/local/bin/kubectl-{{KUBERNETES_VERSION}} dest=/opt/local/bin/kubectl state=link
+  file: src=/opt/bin/kubectl-{{ kubernetes.version }} dest=/opt/bin/kubectl state=link
 
 - name: Create core/kube direcoty
   file: name=/home/core/.kube owner=core group=core state=directory
-  when: SETUP_KUBECONFIG_ON_MASTER
 
 - name: set up admin TLS assets
-  copy: 
-    src={{LOCAL_SSL_DIR}}/{{item}}
+  copy:
+    src={{paths.localSslDir}}/{{item}}
     dest=/home/core/.kube/
     mode=0400
     owner=core 
@@ -22,13 +21,11 @@
   - ca.pem
   - admin-user.pem
   - admin-user-key.pem
-  when: SETUP_KUBECONFIG_ON_MASTER
 
 - name: Create admin kubeconfig
   template:
-    src=admin-kubeconfig.j2 dest=/home/core/.kube/config 
+    src=admin-kubeconfig.j2 dest=/home/core/.kube/config
     mode=0400
-    owner=core 
+    owner=core
     group=core
-  when: SETUP_KUBECONFIG_ON_MASTER
 

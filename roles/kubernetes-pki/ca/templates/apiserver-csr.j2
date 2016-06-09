@@ -5,8 +5,8 @@
     "size": 2048
   },
   "hosts": [
-    "{{ MASTER_URL.split('//')[1].split(':')[0] }}",
-    "{{ K8S_SERVICE_IP }}",
+    "{{ kubernetes.masterApiUrl.split('//')[1].split(':')[0] }}",
+    "{{ kubernetes.serviceIpApi }}",
     "kubernetes",
     "kubernetes.default",
     "kubernetes.default.svc",

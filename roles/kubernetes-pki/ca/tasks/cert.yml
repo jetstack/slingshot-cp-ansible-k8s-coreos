@@ -1,14 +1,14 @@
 - name: CA | {{ item.name }} | ensure csr exists
   template:
     src: "{{ item.name }}-csr.j2"
-    dest: "{{ LOCAL_SSL_DIR }}/{{ item.name }}-csr.json"
+    dest: "{{ paths.localSslDir }}/{{ item.name }}-csr.json"
   delegate_to: 127.0.0.1
   run_once: true
   register: pki_cert_csr
 
 - name: CA | {{ item.name }} | check if cert exists
   stat:
-    path: "{{ LOCAL_SSL_DIR }}/{{ item.name }}.pem"
+    path: "{{ paths.localSslDir }}/{{ item.name }}.pem"
   delegate_to: 127.0.0.1
   run_once: true
   register: pki_cert_pem
@@ -16,7 +16,7 @@
 - name: CA | {{ item.name }} | generate certificates
   shell: "cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile={{ item.profile }} {{ item.name }}-csr.json | cfssljson -bare {{ item.name }}"
   args:
-    chdir: "{{ LOCAL_SSL_DIR }}"
+    chdir: "{{ paths.localSslDir }}"
   delegate_to: 127.0.0.1
   run_once: true
   when: pki_cert_csr | changed or not pki_cert_pem.stat.exists

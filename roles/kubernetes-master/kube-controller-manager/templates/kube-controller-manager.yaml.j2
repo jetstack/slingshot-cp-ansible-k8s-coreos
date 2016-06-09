@@ -7,7 +7,7 @@ spec:
   hostNetwork: true
   containers:
   - name: kube-controller-manager
-    image: {{HYPERKUBE_IMAGE}}
+    image: {{ kubernetes.hyperkubeImage }}
     command:
     - /hyperkube
     - controller-manager
@@ -15,8 +15,8 @@ spec:
     - --leader-elect=true
     - --service-account-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
     - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-{% if CLOUD_PROVIDER %}
-    - --cloud-provider={{CLOUD_PROVIDER}}
+{% if kubernetes.cloudProvider %}
+    - --cloud-provider={{kubernetes.cloudProvider}}
 {% endif %}
     livenessProbe:
       httpGet:

@@ -13,7 +13,9 @@ class AnsibleConfigProvider(object):
     ssh_key_file_path = os.path.expanduser('~/.ssh/id_rsa')
     ssh_config_file_path = os.path.expanduser('~/.ssh/config')
     ansible_inventory_file_path = os.path.abspath('inventory/slingshot')
-    ansible_vars_all_file_path = os.path.abspath('group_vars/all.yaml')
+    ansible_vars_kubernetes_file_path = os.path.abspath(
+        'group_vars/kubernetes.yaml'
+    )
     my_parameters = None
     my_log = None
 
@@ -117,61 +119,13 @@ class AnsibleConfigProvider(object):
         self.configure_ansible_params()
 
     def configure_ansible_params(self):
-        inputConf = self.parameters['general']['cluster']['kubernetes']
-        outputConf = {
-            'source_type': 'packageManager',
-            'cluster_name':
-            inputConf['dns']['domainName'],
-            'kube_master_api_port':
-            inputConf['masterApiPort'],
-            'kube_service_addresses':
-            inputConf['serviceNetwork'],
-            'networking':
-            inputConf['networking'],
-            'flannel_subnet':
-            inputConf['flannel']['subnet'],
-            'flannel_prefix':
-            inputConf['flannel']['prefix'],
-            'flannel_host_prefix':
-            inputConf['flannel']['hostPrefix'],
-            'cluster_logging':
-            inputConf['addons']['clusterLogging'],
-            'cluster_monitoring':
-            inputConf['addons']['clusterMonitoring'],
-            'kube-ui':
-            inputConf['addons']['kubeUI'],
-            'kube-dash':
-            inputConf['addons']['kubeDash'],
-        }
-
-        if inputConf['dns']['replicas'] > 0:
-            outputConf['dns_setup'] = True
-            outputConf['dns_replicas'] = \
-                inputConf['dns']['replicas']
-        else:
-            outputConf['dns_setup'] = False
-
-        if 'interface' in inputConf:
-            interface = inputConf['interface']
-            outputConf['flannel_opts'] = '--iface="%s"' % interface
-            outputConf['apiserver_extra_args'] = \
-                '--advertise-address={{ ansible_%s.ipv4.address }}' % interface
-
-        path = self.ansible_vars_all_file_path
-        contents = [yaml.dump(outputConf, default_flow_style=False)]
-        if 'custom' in self.parameters:
-            customConf = self.parameters['custom']
-            if 'ansible_vars_pre' in customConf:
-                contents.insert(0, customConf['ansible_vars_pre'])
-            if 'ansible_vars_post' in customConf:
-                contents.append(customConf['ansible_vars_post'])
-
-        content = '\n'.join(contents)
-        self.write_to_file(path, content)
+        conf = self.parameters['general']['cluster']
+        path = self.ansible_vars_kubernetes_file_path
+        with open(path, 'w') as outfile:
+            outfile.write(yaml.dump(conf, default_flow_style=False))
         self.log.info(
-            "successfully wrote group_vars key to '%s'" % path
+            "successfully wrote group_vars to '%s'" % path
         )
-        self.log.info("content:\n%s", content)
 
     def configure_ansible_inventory(self):
         self.write_to_file(
@@ -185,16 +139,16 @@ class AnsibleConfigProvider(object):
         pass
 
     def ansible_inventory(self):
-        content = """[masters]
+        content = """[kubernetes-master]
 %s
-[nodes]
+[kubernetes-worker]
 %s
 [etcd:children]
-masters
+kubernetes-master
 
 [kubernetes:children]
-nodes
-masters
+kubernetes-master
+kubernetes-worker
 
 [coreos:children]
 kubernetes

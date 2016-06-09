@@ -9,23 +9,27 @@
 
 - hosts: kubernetes
   roles:
+  - kubernetes-parameters
   - kubernetes-pki
 
 - hosts: etcd
   become: yes
   become_user: root
   roles:
+  - kubernetes-parameters
   - etcd-node
 
-- hosts: master
+- hosts: kubernetes-master
   become: yes
   become_user: root
   roles:
+  - kubernetes-parameters
   - kubernetes-master
 
-- hosts: minions
+- hosts: kubernetes-worker
   become: yes
   become_user: root
   roles:
+  - kubernetes-parameters
   - kubernetes-worker
 

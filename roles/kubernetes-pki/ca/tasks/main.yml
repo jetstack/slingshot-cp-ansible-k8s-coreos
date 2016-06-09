@@ -1,6 +1,6 @@
 - name: CA | ensure local directroy exists
   file:
-    path: "{{ LOCAL_SSL_DIR }}"
+    path: "{{ paths.localSslDir }}"
     state: directory
     mode: 0755
   delegate_to: 127.0.0.1
@@ -9,7 +9,7 @@
 - name: CA | create ca configs
   template:
     src: "{{ item }}.j2"
-    dest: "{{ LOCAL_SSL_DIR }}/{{ item }}.json"
+    dest: "{{ paths.localSslDir }}/{{ item }}.json"
   delegate_to: 127.0.0.1
   run_once: true
   with_items:
@@ -19,15 +19,15 @@
 - name: CA | create ca template
   template:
     src: ca-csr.j2
-    dest: "{{ LOCAL_SSL_DIR }}/ca-csr.json"
+    dest: "{{ paths.localSslDir }}/ca-csr.json"
   delegate_to: 127.0.0.1
   run_once: true
 
 - name: CA | ensure ca exists
   shell: cfssl gencert -initca ca-csr.json | cfssljson -bare ca
   args:
-    creates: "{{ LOCAL_SSL_DIR }}/ca.pem"
-    chdir: "{{ LOCAL_SSL_DIR }}"
+    creates: "{{ paths.localSslDir }}/ca.pem"
+    chdir: "{{ paths.localSslDir }}"
   delegate_to: 127.0.0.1
   run_once: true
 

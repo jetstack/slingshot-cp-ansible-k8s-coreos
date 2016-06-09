@@ -1,9 +1,9 @@
-- name: Create /opt/local/bin
-  file: name=/opt/local/bin state=directory
+- name: Create /opt/bin
+  file: name=/opt/bin state=directory
 
 - name: Download kubelet binary
-  get_url: url={{KUBELET_BINARY}} dest=/opt/local/bin/kubelet-{{KUBERNETES_VERSION}} mode=0755
+  get_url: url={{ kubernetes.binaryUrl }}/kubelet dest=/opt/bin/kubelet-{{ kubernetes.version }} mode=0755
 
 - name: Setting up symbolic link to binary;
-  file: src=/opt/local/bin/kubelet-{{KUBERNETES_VERSION}} dest=/opt/local/bin/kubelet state=link
+  file: src=/opt/bin/kubelet-{{ kubernetes.version }} dest=/opt/bin/kubelet state=link
 

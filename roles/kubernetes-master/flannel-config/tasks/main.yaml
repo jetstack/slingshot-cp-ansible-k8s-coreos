@@ -1,9 +1,7 @@
 - name: Configure flannel network
   uri:
     method=PUT
-    url="{{ETCD_HOSTS.0}}/v2/keys/coreos.com/network/config"
+    url="{{etcd.hosts.0}}/v2/keys/coreos.com/network/config"
     body='{{lookup('template', '../templates/set-network-config.j2')}}'
     HEADER_Content-Type="application/x-www-form-urlencoded"
   register: cfg
-  changed_when: "cfg.json.node.value != cfg.json.prevNode.value"
-
