@@ -4,16 +4,7 @@
     "algo": "rsa",
     "size": 2048
   },
-  "hosts": [
-    "{{ kubernetes.masterApiUrl.split('//')[1].split(':')[0] }}",
-    "{{ kubernetes.serviceIpApi }}",
-    "kubernetes",
-    "kubernetes.default",
-    "kubernetes.default.svc",
-    "kubernetes.default.svc.cluster.local",
-    "127.0.0.1",
-    "localhost"
-  ],
+  "hosts": {{ pki_apiserver_hosts | to_nice_json }},
   "names": [
     {
       "C": "{{ pki_country }}",

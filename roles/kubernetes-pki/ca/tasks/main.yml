@@ -39,6 +39,22 @@
   run_once: true
   when: pki_ca_csr | changed or not pki_ca_pem.stat.exists
 
+- name: CA | determine apiserver hostnames
+  set_fact:
+    pki_apiserver_hosts: >
+      {{ kubernetes['masterSan'] + [
+        "{{ kubernetes.masterApiUrl.split('//')[1].split(':')[0] }}",
+        "{{ kubernetes.serviceIpApi }}",
+        "kubernetes",
+        "kubernetes.default",
+        "kubernetes.default.svc",
+        "kubernetes.default.svc.cluster.local",
+        "127.0.0.1",
+        "localhost"
+        ]
+        | unique | list
+      }}
+
 - name: CA | generate key pairs
   include: cert.yml
   with_items:
