@@ -1,4 +1,3 @@
 ---
 dependencies:
 - kubernetes-pki/ca
-- kubernetes-pki/apiserver
