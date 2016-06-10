@@ -22,14 +22,22 @@
     dest: "{{ paths.localSslDir }}/ca-csr.json"
   delegate_to: 127.0.0.1
   run_once: true
+  register: pki_ca_csr
 
-- name: CA | ensure ca exists
+- name: CA | check if ca certificate exists
+  stat:
+    path: "{{ paths.localSslDir }}/ca.pem"
+  delegate_to: 127.0.0.1
+  run_once: true
+  register: pki_ca_pem
+
+- name: CA | generate ca
   shell: cfssl gencert -initca ca-csr.json | cfssljson -bare ca
   args:
-    creates: "{{ paths.localSslDir }}/ca.pem"
     chdir: "{{ paths.localSslDir }}"
   delegate_to: 127.0.0.1
   run_once: true
+  when: pki_ca_csr | changed or not pki_ca_pem.stat.exists
 
 - name: CA | generate key pairs
   include: cert.yml
