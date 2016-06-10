@@ -194,7 +194,8 @@ commands:
         - apply
     type: docker
     parameterFile: %s
-    persistPaths: []""" % os.path.basename(self.parameters_file_path))
+    persistPaths:
+    - ssl_ca/""" % os.path.basename(self.parameters_file_path))
 
     def command(self, argv):
         cmd = argv[1]
