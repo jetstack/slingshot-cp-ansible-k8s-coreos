@@ -19,21 +19,14 @@ RUN curl -s -L -o /usr/local/bin/cfssl     https://pkg.cfssl.org/R${CFSSL_VERSIO
     echo "${CFSSL_HASH}  /usr/local/bin/cfssl" | sha256sum -c && \
     echo "${CFSSLJSON_HASH}  /usr/local/bin/cfssljson" | sha256sum -c
 
-RUN groupadd -g 950 ansible && \
-    useradd -u 950 -g 950 -d /ansible ansible
+ENV HOME /ansible
+RUN sed -i 's/:\/root:/:\/ansible:/g' /etc/passwd
 
 WORKDIR /ansible/code
 COPY requirements.txt /ansible/code/
 RUN pip install -r requirements.txt
-RUN chown -cR ansible:ansible /ansible
-RUN chown -cR ansible:ansible /ansible
-
-USER ansible
-
 
 COPY ansible.cfg /ansible/code/
-COPY requirements.yaml /ansible/code/
-RUN ansible-galaxy -r requirements.yaml install
 
 COPY cluster.yaml /ansible/code/
 COPY group_vars/coreos.yaml /ansible/code/group_vars/
@@ -42,10 +35,6 @@ COPY run.py /ansible/run.py
 
 # TODO: remove me only for dev
 COPY parameters.yaml /ansible/code/
-
-USER root
-RUN chown -cR ansible:ansible /ansible
-USER ansible
 
 ENTRYPOINT ["/usr/bin/python", "/ansible/run.py"]
 
