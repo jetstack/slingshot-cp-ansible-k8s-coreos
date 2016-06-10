@@ -33,9 +33,6 @@ COPY group_vars/coreos.yaml /ansible/code/group_vars/
 COPY roles /ansible/code/
 COPY run.py /ansible/run.py
 
-# TODO: remove me only for dev
-COPY parameters.yaml /ansible/code/
-
 ENTRYPOINT ["/usr/bin/python", "/ansible/run.py"]
 
 CMD discover
