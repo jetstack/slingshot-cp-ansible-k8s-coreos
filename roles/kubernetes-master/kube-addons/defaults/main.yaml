@@ -1,0 +1,12 @@
+kube_addons:
+  dns:
+  - name: kube-dns
+    kind: deployment
+  - name: kube-dns
+    kind: svc
+  dashboard:
+  - name: kubernetes-dashboard
+    kind: deployment
+  - name: kubernetes-dashboard
+    kind: svc
+

@@ -1,0 +1,31 @@
+- name: "{{ name }} | write templates to node"
+  template:
+    src: "{{ item.name }}-{{ item.kind }}.yaml.j2"
+    dest: "/etc/kubernetes/addons/{{ item.name }}-{{ item.kind }}.yaml"
+  with_items:
+  - "{{ kube_addons[name] }}"
+  tags: "{{ name }}"
+  register: kube_addon_templates
+
+- name: "{{ name }} | check if resources exists"
+  command: >
+    /opt/bin/kubectl
+    --kubeconfig=/home/core/.kube/config
+    --namespace=kube-system
+    get {{ item.kind }} {{ item.name }}
+  with_items:
+  - "{{ kube_addons[name] }}"
+  tags: "{{ name }}"
+  changed_when: false
+  register: kube_addon_resources
+  ignore_errors: true
+
+- name: "{{ name }} | apply resource config"
+  command: >
+    /opt/bin/kubectl
+    --kubeconfig=/home/core/.kube/config
+    apply -f /etc/kubernetes/addons/{{ item.name }}-{{ item.kind }}.yaml
+  with_items:
+  - "{{ kube_addons[name] }}"
+  tags: "{{ name }}"
+  when: kube_addon_templates|changed or kube_addon_resources|failed
