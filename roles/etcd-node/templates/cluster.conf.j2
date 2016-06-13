@@ -1,12 +1,12 @@
 [Service]
 Environment="ETCD_NAME={{ansible_machine_id}}"
-Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{private_address}}:2380"
-Environment="ETCD_LISTEN_PEER_URLS=http://{{private_address}}:2380"
-Environment="ETCD_LISTEN_CLIENT_URLS=http://{{private_address}}:2379,http://127.0.0.1:2379"
-Environment="ETCD_ADVERTISE_CLIENT_URLS=http://{{private_address}}:2379"
+Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ privateIP }}:2380"
+Environment="ETCD_LISTEN_PEER_URLS=http://{{ privateIP }}:2380"
+Environment="ETCD_LISTEN_CLIENT_URLS=http://{{ privateIP }}:2379,http://127.0.0.1:2379"
+Environment="ETCD_ADVERTISE_CLIENT_URLS=http://{{ privateIP }}:2379"
 Environment="ETCD_INITIAL_CLUSTER_TOKEN={{etcd.initialToken}}"
 Environment="ETCD_INITIAL_CLUSTER={% for host in groups['etcd'] -%}
-  {{hostvars[host].ansible_machine_id}}=http://{{hostvars[host].private_address}}:2380{% if not loop.last -%},{%endif%}
+  {{hostvars[host].ansible_machine_id}}=http://{{hostvars[host]. privateIP }}:2380{% if not loop.last -%},{%endif%}
 {%- endfor %}"
 Environment="ETCD_INITIAL_CLUSTER_STATE=new"
 

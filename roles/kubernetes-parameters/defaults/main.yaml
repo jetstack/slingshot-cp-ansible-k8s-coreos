@@ -1,12 +1,14 @@
 ---
 cluster_name: cluster
 
-default_interface: "{{ ansible_default_ipv4.interface }}"
+default_interface: "eth1"
+# TODO fix this "{{ ansible_default_ipv4.interface }}"
 
 kubernetes:
   version: 1.2.4
   masterApiPort: 443
-  masterApiUrl: "https://{{ groups['kubernetes-master'][0] }}"
+  masterApiUrl: "https://{{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }}"
+  masterSan: []
   serviceNetwork: 10.245.0.0/16
   binaryUrlPrefix: https://storage.googleapis.com/kubernetes-release/release
   imagePrefix: gcr.io/google_containers
@@ -14,7 +16,7 @@ kubernetes:
 
 etcd:
   initialToken: "{{ cluster_name }}"
-  hosts: "{{ groups['etcd'] | map('regex_replace', '(.*)', 'http://\\1:2379') | list }}"
+  hosts: "{{ groups['kubernetes-master'] | map('extract', hostvars, 'privateIP') | map('regex_replace', '(.*)', 'http://\\1:2379') | list }}"
 
 paths:
   localSslDir: ssl_ca/

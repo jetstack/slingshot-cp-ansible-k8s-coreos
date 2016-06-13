@@ -78,13 +78,22 @@ class AnsibleConfigProvider(object):
                     '   StrictHostKeyChecking no',
                     ''
                 ]
-            elif host['publicIP'] is None:
+
+            output += [
+                'Host %s' % host['name'],
+                '   StrictHostKeyChecking no',
+            ]
+            if host['publicIP'] is None:
                 output += [
-                    'Host %s' % host['privateIP'],
-                    '   StrictHostKeyChecking no',
                     '   ProxyCommand ssh -q bastion ncat %h 22',
-                    ''
+                    '   Hostname %s' % host['privateIP']
                 ]
+            else:
+                output += [
+                    '   Hostname %s' % host['publicIP']
+                ]
+            output.append('')
+
         self.write_to_file(
             self.ssh_config_file_path,
             '\n'.join(output),
@@ -162,10 +171,12 @@ kubernetes
         output = ''
         for host in self.parameters['inventory']:
             if role in host['roles']:
-                for ip in ['publicIP', 'privateIP']:
-                    if host[ip] is not None:
-                        output += "%s \n" % host[ip]
-                        break
+                ips = ' '.join([
+                    '%s=%s' % (ip, host[ip])
+                    for ip in ['privateIP', 'publicIP']
+                    if host[ip] is not None
+                ])
+                output += "%s %s\n" % (host['name'], ips)
 
         return output
 

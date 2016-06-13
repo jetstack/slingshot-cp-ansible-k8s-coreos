@@ -8,15 +8,9 @@
           'binaryUrl': kubernetes['binaryUrlPrefix'] + '/v' + kubernetes['version'] + '/bin/linux/amd64'
         }
       )}}
-    private_address: "{{ ansible_default_ipv4.address }}"
 
 - debug:
-    msg: "etcd: {{ etcd }}"
-
-- debug:
-    msg: "kubernetes: {{ kubernetes }}"
-
-- debug:
-    msg: "default_interface: {{ default_interface }}"
-
-
+    msg: >
+     etcd: {{ etcd | to_nice_yaml }}
+     kubernetes: {{ kubernetes | to_nice_yaml }}
+     default_interface: {{ default_interface }}
