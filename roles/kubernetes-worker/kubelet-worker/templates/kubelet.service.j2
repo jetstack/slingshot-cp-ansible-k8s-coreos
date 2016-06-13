@@ -4,7 +4,7 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
 ExecStart=/opt/bin/kubelet \
-  --api-servers={{kubernetes.masterApiUrl}} \
+  --api-servers={{ kubernetes.masterApiUrl }} \
   --register-node=true \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
@@ -12,10 +12,14 @@ ExecStart=/opt/bin/kubelet \
   --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
   --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
-  --cloud-provider={{kubernetes.cloudProvider}} \
+  --node-labels="role=worker" \
+{% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
+  --cloud-provider="{{ kubernetes.cloudProvider }}" \
+{% endif %}
+  --cluster-dns={{ kubernetes.serviceIpDns }} \
+  --cluster-domain={{ kubernetes.dns.domainName }} \
   --cadvisor-port=0
 Restart=always
 RestartSec=10
 [Install]
 WantedBy=multi-user.target
-

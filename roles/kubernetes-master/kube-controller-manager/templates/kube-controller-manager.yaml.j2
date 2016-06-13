@@ -15,8 +15,8 @@ spec:
     - --leader-elect=true
     - --service-account-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
     - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-{% if kubernetes.cloudProvider %}
-    - --cloud-provider={{kubernetes.cloudProvider}}
+{% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
+    - --cloud-provider="{{ kubernetes.cloudProvider }}"
 {% endif %}
     livenessProbe:
       httpGet:

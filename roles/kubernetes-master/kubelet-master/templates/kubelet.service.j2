@@ -8,12 +8,14 @@ ExecStart=/opt/bin/kubelet \
   --register-schedulable=false \
   --allow-privileged=true \
   --config=/etc/kubernetes/manifests \
-  --hostname-override={{private_address}} \
-  --node-labels="role=master,version={{kubernetes.version}}" \
-  --cloud-provider={{kubernetes.cloudProvider}} \
-  --cluster-dns={{kubernetes.serviceIpDns}} \
-  --cadvisor-port=0 \
-  --cluster-domain=cluster.local
+  --hostname-override={{ privateIP }} \
+  --node-labels="role=master" \
+{% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
+  --cloud-provider="{{ kubernetes.cloudProvider }}" \
+{% endif %}
+  --cluster-dns={{ kubernetes.serviceIpDns }} \
+  --cluster-domain={{ kubernetes.dns.domainName }} \
+  --cadvisor-port=0
 
 Restart=always
 RestartSec=10
