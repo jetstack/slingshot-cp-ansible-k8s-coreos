@@ -13,4 +13,3 @@
     msg: >
      etcd: {{ etcd | to_nice_yaml }}
      kubernetes: {{ kubernetes | to_nice_yaml }}
-     default_interface: {{ default_interface }}

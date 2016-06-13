@@ -1,9 +1,6 @@
 ---
 cluster_name: cluster
 
-default_interface: "eth1"
-# TODO fix this "{{ ansible_default_ipv4.interface }}"
-
 kubernetes:
   version: 1.2.4
   masterApiPort: 443
@@ -12,7 +9,7 @@ kubernetes:
   serviceNetwork: 10.245.0.0/16
   binaryUrlPrefix: https://storage.googleapis.com/kubernetes-release/release
   imagePrefix: gcr.io/google_containers
-  cloudProvider: aws
+  cloudProvider: ""
 
 etcd:
   initialToken: "{{ cluster_name }}"
