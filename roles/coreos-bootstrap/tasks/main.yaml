@@ -1,0 +1,55 @@
+- name: "check if pypy {{ pypy_version }} is installed"
+  raw: >
+    test "$({{ pypy_bin_path }} --version 2>&1 | tail -n 1 | awk '{ print $2}')" = "{{ pypy_version }}"
+  register: need_pypy
+  ignore_errors: true
+
+- name: "download and install pypy {{ pypy_version }}"
+  raw: >
+    mkdir -p {{ pypy_path }} &&
+    curl -sL {{ pypy_download_url }} -o {{ pypy_tmp_path }} &&
+    echo "{{ pypy_hash_sha256 }}  {{ pypy_tmp_path }}" | sha256sum -c &&
+    tar xjf {{ pypy_tmp_path }} -C {{ pypy_path }} --strip-components=1 &&
+    rm {{ pypy_tmp_path }}
+  when: need_pypy | failed
+  changed_when: true
+
+- name: create ssl foler
+  become: yes
+  file:
+    path: /opt/prefix/ssl
+    state: directory
+    mode: "0755"
+
+- name: fix location of ssl certificates
+  become: yes
+  file:
+    src: /usr/share/ca-certificates/ca-certificates.crt
+    dest: /opt/prefix/ssl/cert.pem
+    state: link
+
+- name: "check if pip is installed"
+  shell: "{{ansible_python_interpreter}} -m pip --version"
+  register: need_pip
+  ignore_errors: true
+  changed_when: false
+
+- name: copy get-pip.py
+  copy: src=get-pip.py dest=~/get-pip.py
+  when: need_pip | failed
+  changed_when: true
+
+- name: install pip
+  shell: "{{ansible_python_interpreter}} ~/get-pip.py"
+  when: need_pip | failed
+  changed_when: true
+
+- name: remove get-pip.py
+  file: path=~/get-pip.py state=absent
+  when: need_pip | failed
+  changed_when: true
+
+- name: install httplib2
+  pip:
+    name: httplib2
+    executable: "{{ pypy_path }}/bin/pip"

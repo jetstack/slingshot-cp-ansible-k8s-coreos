@@ -2,10 +2,7 @@
 - hosts: coreos
   gather_facts: false
   roles:
-  - defunctzombie.coreos-bootstrap
-  tasks:
-  - name: install httplib2
-    pip: name=httplib2
+  - coreos-bootstrap
 
 - hosts: kubernetes
   roles:

@@ -1,0 +1,7 @@
+pypy_path: /home/core/pypy
+pypy_bin_path: /home/core/pypy/bin/pypy
+pypy_version: 5.1.1
+pypy_tmp_path: /tmp/pypy.tar.bz2
+pypy_hash_sha256: c0502d8db1cc2b81513cc6047813669b0a561cb20e41d60e179f51fe8657a794
+pypy_download_url_base: https://bitbucket.org/squeaky/portable-pypy/downloads
+pypy_download_url: "{{ pypy_download_url_base }}/pypy-{{ pypy_version }}-linux_x86_64-portable.tar.bz2"
