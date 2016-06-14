@@ -4,4 +4,5 @@ dependencies:
 - {role: kubernetes-worker/worker-keys }
 - {role: kubernetes-worker/kubelet-worker }
 - {role: kubernetes-worker/kube-proxy-worker }
+- {role: kubernetes-worker/flexvolume-torus }
 

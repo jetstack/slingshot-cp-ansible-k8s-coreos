@@ -1,0 +1,9 @@
+- set_fact:
+    kubelet_plugin_volume_path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/
+    kubelet_plugin_name: coreos.com~torus
+
+- name: install torus plugin 
+  shell: >
+   curl -sL https://github.com/coreos/torus/releases/download/v0.1.0/torus_v0.1.0_linux_amd64.tar.gz | tar xzvf - torus_v0.1.0_linux_amd64/torusblk --strip-components=1 -C "{{ kubelet_plugin_volume_path }}/{{ kubelet_plugin_name }}/torusblk"
+  args:
+    creates: "{{ kubelet_plugin_volume_path }}/{{ kubelet_plugin_name }}/torusblk"
