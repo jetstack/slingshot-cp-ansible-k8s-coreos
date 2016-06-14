@@ -11,7 +11,7 @@ ExecStart=/opt/bin/kubelet \
   --hostname-override={{ privateIP }} \
   --node-labels="role=master" \
 {% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
-  --cloud-provider="{{ kubernetes.cloudProvider }}" \
+  --cloud-provider={{ kubernetes.cloudProvider }} \
 {% endif %}
   --cluster-dns={{ kubernetes.serviceIpDns }} \
   --cluster-domain={{ kubernetes.dns.domainName }} \

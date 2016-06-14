@@ -24,7 +24,7 @@ spec:
     - --runtime-config=extensions/v1beta1=true,extensions/v1beta1/thirdpartyresources=true
     - --service-account-key-file=/etc/kubernetes/ssl/apiserver-key.pem
 {% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
-    - --cloud-provider="{{ kubernetes.cloudProvider }}"
+    - --cloud-provider={{ kubernetes.cloudProvider }}
 {% endif %}
     ports:
     - containerPort: 443

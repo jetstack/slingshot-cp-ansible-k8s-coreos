@@ -14,7 +14,7 @@ ExecStart=/opt/bin/kubelet \
   --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
   --node-labels="role=worker" \
 {% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
-  --cloud-provider="{{ kubernetes.cloudProvider }}" \
+  --cloud-provider={{ kubernetes.cloudProvider }} \
 {% endif %}
   --cluster-dns={{ kubernetes.serviceIpDns }} \
   --cluster-domain={{ kubernetes.dns.domainName }} \
