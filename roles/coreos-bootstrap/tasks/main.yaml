@@ -1,6 +1,5 @@
 - name: "check reachability of nodes"
-- action:
-    raw: uptime
+  raw: uptime
   register: ping
   until: ping.rc == 0
   retries: 5
