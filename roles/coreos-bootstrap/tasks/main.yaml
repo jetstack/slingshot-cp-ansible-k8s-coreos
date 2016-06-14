@@ -1,3 +1,11 @@
+- name: "check reachability of nodes"
+- action:
+    raw: uptime
+  register: ping
+  until: ping.rc == 0
+  retries: 5
+  delay: 1
+
 - name: "check if pypy {{ pypy_version }} is installed"
   raw: >
     test "$({{ pypy_bin_path }} --version 2>&1 | tail -n 1 | awk '{ print $2}')" = "{{ pypy_version }}"
