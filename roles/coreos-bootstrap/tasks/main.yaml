@@ -1,10 +1,3 @@
-- name: "check reachability of nodes"
-  raw: echo "available"
-  register: ping
-  until: ping.stdout.find('available') != -1
-  retries: 10
-  delay: 1
-
 - name: "check if pypy {{ pypy_version }} is installed"
   raw: >
     test "$({{ pypy_bin_path }} --version 2>&1 | tail -n 1 | awk '{ print $2}')" = "{{ pypy_version }}"

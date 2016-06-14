@@ -6,6 +6,7 @@ import os
 import os.path
 import sys
 import subprocess
+import time
 
 
 class AnsibleConfigProvider(object):
@@ -187,12 +188,33 @@ kubernetes
             stderr=sys.stderr
         )
         p.communicate()
+        return p
 
     def apply(self):
         self.prepare()
-        self.run_command(
+
+        tries = 0
+        while True:
+            self.log.info("check connectivity to all nodes:")
+            p = self.run_command(
+                ["ansible", "-m", "raw", "-a", "uptime", "coreos"],
+            )
+            if p.returncode == 0:
+                break
+            tries += 1
+            if tries >= 10:
+                sys.exit(1)
+            wait_time = 0.1*(2**tries)
+            self.log.warn(
+                "connectivity check failed, -> retrying in %f seconds" %
+                wait_time
+            )
+            time.sleep(wait_time)
+
+        p = self.run_command(
             ["ansible-playbook", "cluster.yaml", "-l", "coreos"],
         )
+        sys.exit(p.returncode)
 
     def discover(self):
         print("""provider:
