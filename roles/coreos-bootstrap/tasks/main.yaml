@@ -1,8 +1,8 @@
 - name: "check reachability of nodes"
-  raw: uptime
+  raw: echo "available"
   register: ping
-  until: ping.rc == 0
-  retries: 5
+  until: ping.stdout.find('available') != -1
+  retries: 10
   delay: 1
 
 - name: "check if pypy {{ pypy_version }} is installed"
