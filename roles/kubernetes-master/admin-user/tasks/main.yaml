@@ -10,22 +10,9 @@
 - name: Create core/kube direcoty
   file: name=/home/core/.kube owner=core group=core state=directory
 
-- name: set up admin TLS assets
-  copy:
-    src={{paths.localSslDir}}/{{item}}
-    dest=/home/core/.kube/
-    mode=0400
-    owner=core 
-    group=core
-  with_items:
-  - ca.pem
-  - admin-user.pem
-  - admin-user-key.pem
-
 - name: Create admin kubeconfig
   template:
     src=admin-kubeconfig.j2 dest=/home/core/.kube/config
     mode=0400
     owner=core
     group=core
-
