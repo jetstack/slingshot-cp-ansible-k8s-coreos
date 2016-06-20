@@ -22,5 +22,5 @@
   run_once: true
   template:
     src: admin-kubeconfig.j2
-    dest: ".kubeconfig"
+    dest: "{{ paths.localSslDir }}/.kubeconfig"
     mode: 0400
