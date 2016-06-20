@@ -21,6 +21,6 @@
   delegate_to: 127.0.0.1
   run_once: true
   template:
-    src: admin-kubeconfig.j2
+    src: admin-kubeconfig-host.j2
     dest: "{{ paths.localSslDir }}/.kubeconfig"
     mode: 0400
