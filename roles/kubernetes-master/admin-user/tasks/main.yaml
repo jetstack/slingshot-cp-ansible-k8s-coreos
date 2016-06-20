@@ -16,3 +16,11 @@
     mode=0400
     owner=core
     group=core
+
+- name: Create admin kubeconfig for host
+  delegate_to: 127.0.0.1
+  run_once: true
+  template:
+    src: admin-kubeconfig.j2
+    dest: ".kubeconfig"
+    mode: 0400

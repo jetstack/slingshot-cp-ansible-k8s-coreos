@@ -228,7 +228,8 @@ commands:
     type: docker
     parameterFile: %s
     persistPaths:
-    - ssl_ca/""" % os.path.basename(self.parameters_file_path))
+    - ssl_ca/
+    - .kubeconfig""" % os.path.basename(self.parameters_file_path))
 
     def command(self, argv):
         cmd = argv[1]
