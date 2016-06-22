@@ -16,9 +16,6 @@ ExecStart=/opt/bin/kubelet \
 {% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
   --cloud-provider={{ kubernetes.cloudProvider }} \
 {% endif %}
-{% if kubernetes.cloudProvider == "aws" and (kubernetes.version | version_compare('1.3', '>=')) %}
-  --experimental-flannel-overlay=true \
-{% endif %}
   --cluster-dns={{ kubernetes.serviceIpDns }} \
   --cluster-domain={{ kubernetes.dns.domainName }} \
   --cadvisor-port=0
