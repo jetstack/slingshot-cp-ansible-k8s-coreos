@@ -32,10 +32,6 @@ spec:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
       readOnly: true
-{% if kubernetes.cloudProvider == "aws" and (kubernetes.version | version_compare('1.3', '>=')) %}
-    - mountPath: /dev
-      name: dev-host
-{% endif %}
   volumes:
   - hostPath:
       path: /etc/kubernetes/ssl
@@ -43,8 +39,3 @@ spec:
   - hostPath:
       path: /usr/share/ca-certificates
     name: ssl-certs-host
-{% if kubernetes.cloudProvider == "aws" and (kubernetes.version | version_compare('1.3', '>=')) %}
-  - hostPath:
-      path: /dev
-    name: dev-host
-{% endif %}
