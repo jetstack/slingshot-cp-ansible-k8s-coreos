@@ -30,7 +30,7 @@ COPY ansible.cfg /ansible/code/
 
 COPY cluster.yaml /ansible/code/
 COPY group_vars/coreos.yaml /ansible/code/group_vars/
-COPY roles /ansible/code/
+COPY roles /ansible/code/roles
 COPY run.py /ansible/run.py
 
 ENTRYPOINT ["/usr/bin/python", "/ansible/run.py"]
