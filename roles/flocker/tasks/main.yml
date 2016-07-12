@@ -23,6 +23,14 @@
   delegate_to: 127.0.0.1
   run_once: true
 
+- name: flocker-ca create-api-certificate user
+  shell: "/ansible/flocker/bin/flocker-ca create-api-certificate user"
+  args:
+    chdir: "{{ flocker_local_tempdir }}"
+    creates: "user.crt"
+  delegate_to: 127.0.0.1
+  run_once: true
+
 - name: create /etc/flocker on the node
   file:
     path: /etc/flocker

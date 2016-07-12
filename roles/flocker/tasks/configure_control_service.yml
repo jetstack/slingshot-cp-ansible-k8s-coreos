@@ -6,6 +6,19 @@
     creates: "control-{{ inventory_hostname }}.crt"
   delegate_to: 127.0.0.1
 
+- name: copy user.crt to the node
+  copy:
+    src: "{{ flocker_local_tempdir }}/user.crt"
+    dest: /etc/flocker/user.crt
+  become: yes
+
+- name: copy user.key to the node
+  copy:
+    src: "{{ flocker_local_tempdir }}/user.key"
+    dest: /etc/flocker/user.key
+    mode: 0600
+  become: yes
+
 - name: copy control key to the control node
   copy:
     src: "{{ flocker_local_tempdir }}/control-{{ inventory_hostname }}.key"
