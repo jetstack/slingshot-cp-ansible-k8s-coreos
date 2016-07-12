@@ -21,7 +21,7 @@ spec:
         - name: flocker-dataset-agent
           securityContext:
             privileged: true
-          image: clusterhq/flocker-dataset-agent
+          image: clusterhq/flocker-dataset-agent:1.11.0
           volumeMounts:
             - name: flocker-config
               mountPath: /etc/flocker
