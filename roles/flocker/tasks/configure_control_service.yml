@@ -30,6 +30,11 @@
   copy:
     src: "{{ flocker_local_tempdir }}/control-{{ inventory_hostname }}.crt"
     dest: /etc/flocker/control-service.crt
-  notify:
-    - restart flocker-control
-  sudo: yes
+  become: yes
+
+- name: write flockerctl wrapper to the master
+  template:
+    src: flockerctl.j2
+    dest: /opt/bin/flockerctl
+    mode: 0755
+  become: yes
