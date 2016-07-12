@@ -1,0 +1,10 @@
+version: 1
+control-service:
+   hostname: {{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }}
+   port: 4524
+dataset:
+   backend: aws
+   region: {{ custom.aws_region }}
+   zone: {{ custom.aws_zones }}
+   access_key_id: {{ custom.flocker_access_key }}
+   secret_access_key: {{ custom.flocker_secret_key }}

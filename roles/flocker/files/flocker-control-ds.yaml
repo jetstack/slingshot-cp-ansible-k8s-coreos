@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: flocker-control
+  namespace: kube-system
+  labels:
+    component: flocker
+    role: control
+spec:
+  template:
+    metadata:
+      labels:
+        component: flocker
+        role: control
+    spec:
+      nodeSelector:
+        role: master
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      containers:
+        - name: flocker-control
+          securityContext:
+            privileged: true
+          image: clusterhq/flocker-control-service
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: flocker-control-etc
+              mountPath: /etc/flocker
+              readOnly: true
+            - name: var-lib-flocker
+              mountPath: /var/lib/flocker
+          ports:
+          - containerPort: 4523
+            hostPort: 4523
+            name: api
+            protocol: TCP
+          - containerPort: 4524
+            hostPort: 4524
+            name: agent
+            protocol: TCP
+      volumes:
+        - name: flocker-control-etc
+          hostPath:
+            path: /etc/flocker
+        - name: var-lib-flocker
+          hostPath:
+            path: /var/lib/flocker

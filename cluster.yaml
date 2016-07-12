@@ -30,3 +30,7 @@
   - kubernetes-parameters
   - kubernetes-worker
 
+- hosts: kubernetes
+  roles:
+  - role: flocker
+    when: custom.flocker_enabled == 'true'

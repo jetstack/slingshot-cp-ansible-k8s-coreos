@@ -4,10 +4,13 @@ MAINTAINER Christian Simon <simon@swine.de>
 RUN apt-get update &&  \
     DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential \
     python-pip libffi-dev libgmp-dev python-dev libyaml-dev nano libssl-dev \
-    openssh-client && \
+    openssh-client virtualenv && \
     apt-get clean && \
     rm /var/lib/apt/lists/*_*
 
+RUN virtualenv --python=/usr/bin/python2.7 /ansible/flocker && \
+    /ansible/flocker/bin/pip install --upgrade pip && \
+    /ansible/flocker/bin/pip  install https://clusterhq-archive.s3.amazonaws.com/python/Flocker-1.13.0-py2-none-any.whl
 
 # get cfssl
 ENV CFSSL_VERSION 1.2
@@ -32,6 +35,7 @@ COPY cluster.yaml /ansible/code/
 COPY group_vars/coreos.yaml /ansible/code/group_vars/
 COPY roles /ansible/code/roles
 COPY run.py /ansible/run.py
+COPY inventory /ansible/code/inventory
 
 ENTRYPOINT ["/usr/bin/python", "/ansible/run.py"]
 

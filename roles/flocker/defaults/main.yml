@@ -13,7 +13,6 @@ flocker_ceph_groupname: flocker_ceph
 flocker_agent_yml_path: ""
 
 flocker_cluster_name: my_flocker_cluster
-# Warning: this folder will be deleted everytime the playbook is run
-flocker_local_tempdir: /tmp/{{ flocker_cluster_name }}
+flocker_local_tempdir: ssl_ca/flocker
 flocker_api_cert_name: api_user
 flocker_install_docker_plugin: true

@@ -17,6 +17,9 @@ class AnsibleConfigProvider(object):
     ansible_vars_kubernetes_file_path = os.path.abspath(
         'group_vars/kubernetes.yaml'
     )
+    ansible_vars_all_file_path = os.path.abspath(
+        'group_vars/all.yaml'
+    )
     my_parameters = None
     my_log = None
 
@@ -131,6 +134,15 @@ class AnsibleConfigProvider(object):
     def configure_ansible_params(self):
         conf = self.parameters['general']['cluster']
         path = self.ansible_vars_kubernetes_file_path
+        with open(path, 'w') as outfile:
+            outfile.write(yaml.dump(conf, default_flow_style=False))
+        self.log.info(
+            "successfully wrote group_vars to '%s'" % path
+        )
+        conf = {
+            'custom': self.parameters['custom']
+        }
+        path = self.ansible_vars_all_file_path
         with open(path, 'w') as outfile:
             outfile.write(yaml.dump(conf, default_flow_style=False))
         self.log.info(

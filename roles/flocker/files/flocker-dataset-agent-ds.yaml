@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: flocker-dataset-agent
+  labels:
+    tier: storage
+    app: flocker-dataset-agent
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        name: flocker-dataset-agent
+    spec:
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      nodeSelector:
+        role: worker
+      containers:
+        - name: flocker-dataset-agent
+          securityContext:
+            privileged: true
+          image: clusterhq/flocker-dataset-agent
+          volumeMounts:
+            - name: flocker-config
+              mountPath: /etc/flocker
+            - name: dev
+              mountPath: /dev
+            - name: host
+              mountPath: /host
+            - name: flocker
+              mountPath: /flocker
+      volumes:
+        - name: flocker-config
+          hostPath:
+              path: /etc/flocker
+        - name: dev
+          hostPath:
+              path: /dev
+        - name: host
+          hostPath:
+              path: /
+        - name: flocker
+          hostPath:
+              path: /flocker

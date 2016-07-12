@@ -1,0 +1,5 @@
+[flocker_control_service:children]
+kubernetes-master
+
+[flocker_agents:children]
+kubernetes-worker
