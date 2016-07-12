@@ -24,7 +24,7 @@
     src: "{{ flocker_local_tempdir }}/control-{{ inventory_hostname }}.key"
     dest: /etc/flocker/control-service.key
     mode: 0600
-  sudo: yes
+  become: yes
 
 - name: copy control cert to the control node
   copy:
