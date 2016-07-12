@@ -42,3 +42,29 @@
     src: agent.yml.j2
     dest: /etc/flocker/agent.yml
   become: yes
+
+- name: setup hosts entry for control-service
+  lineinfile:
+    dest: /etc/hosts
+    regexp: 'control-service$'
+    line: "{{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }} control-service"
+    owner: root
+    group: root
+    mode: 0644
+    create: yes
+  become: yes
+
+- name: create /etc/systemd/system/kubelet.service.d/ on the node
+  file:
+    path: /etc/systemd/system/kubelet.service.d/
+    state: directory
+  become: yes
+
+- name: configure kubelet to use flocker
+  template:
+    src: systemd-kubelet-drop-in.j2
+    dest: /etc/systemd/system/kubelet.service.d/30-flocker.conf
+  become: yes
+  notify:
+  - reload systemd
+  - restart kubelet

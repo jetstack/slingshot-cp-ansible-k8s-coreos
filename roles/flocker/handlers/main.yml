@@ -1,16 +1,10 @@
 ---
-- name: restart flocker-control
-  service: name=flocker-control state=restarted
-  sudo: True
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: yes
 
-- name: restart flocker-dataset-agent
-  service: name=flocker-dataset-agent state=restarted
-  sudo: yes
-
-- name: restart flocker-container-agent
-  service: name=flocker-container-agent state=restarted
-  sudo: yes
-
-- name: restart flocker-docker-plugin
-  service: name=flocker-docker-plugin state=restarted
-  sudo: yes
+- name: restart kubelet
+  service:
+    name: kubelet
+    state: restarted
+  become: yes
