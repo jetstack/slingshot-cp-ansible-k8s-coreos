@@ -16,3 +16,9 @@ flocker_cluster_name: my_flocker_cluster
 flocker_local_tempdir: ssl_ca/flocker
 flocker_api_cert_name: api_user
 flocker_install_docker_plugin: true
+
+flocker_kubernetes:
+  - name: flocker-control
+    kind: daemonset
+  - name: flocker-dataset-agent
+    kind: daemonset

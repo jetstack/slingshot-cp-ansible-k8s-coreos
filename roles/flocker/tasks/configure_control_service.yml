@@ -38,3 +38,41 @@
     dest: /opt/bin/flockerctl
     mode: 0755
   become: yes
+
+- name: create /etc/flocker/kubernetes on the node
+  file:
+    path: /etc/flocker/kubernetes
+    state: directory
+    mode: 0700
+  become: yes
+
+- name: "write kubernetes templates to node"
+  template:
+    src: "{{ item.name }}-{{ item.kind }}.yaml.j2"
+    dest: "/etc/flocker/kubernetes/{{ item.name }}-{{ item.kind }}.yaml"
+  with_items:
+  - "{{ flocker_kubernetes}}"
+  register: kube_templates
+  become: yes
+
+- name: "check if resources exists"
+  command: >
+    /opt/bin/kubectl
+    --kubeconfig=/home/core/.kube/config
+    --namespace=kube-system
+    get {{ item.kind }} {{ item.name }}
+  with_items:
+  - "{{ flocker_kubernetes}}"
+  changed_when: false
+  register: kube_resources
+  ignore_errors: true
+
+- name: "apply resource config"
+  command: >
+    /opt/bin/kubectl
+    --kubeconfig=/home/core/.kube/config
+    apply -f /etc/flocker/kubernetes/{{ item.name }}-{{ item.kind }}.yaml
+  with_items:
+  - "{{ flocker_kubernetes}}"
+  when: kube_templates|changed or kube_resources|failed
+  become: yes
