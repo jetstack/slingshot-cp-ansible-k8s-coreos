@@ -17,6 +17,8 @@ flocker_local_tempdir: ssl_ca/flocker
 flocker_api_cert_name: api_user
 flocker_install_docker_plugin: true
 
+flocker_version: 1.14.0
+
 flocker_kubernetes:
   - name: flocker-control
     kind: daemonset

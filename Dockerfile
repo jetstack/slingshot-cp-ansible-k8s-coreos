@@ -10,7 +10,7 @@ RUN apt-get update &&  \
 
 RUN virtualenv --python=/usr/bin/python2.7 /ansible/flocker && \
     /ansible/flocker/bin/pip install --upgrade pip && \
-    /ansible/flocker/bin/pip  install https://clusterhq-archive.s3.amazonaws.com/python/Flocker-1.13.0-py2-none-any.whl
+    /ansible/flocker/bin/pip  install https://clusterhq-archive.s3.amazonaws.com/python/Flocker-1.14.0-py2-none-any.whl
 
 # get cfssl
 ENV CFSSL_VERSION 1.2
