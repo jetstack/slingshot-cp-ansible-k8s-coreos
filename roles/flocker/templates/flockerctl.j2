@@ -1,2 +1,2 @@
 #!/bin/bash
-exec docker run --rm -t -i --workdir /etc/flocker -v /etc/flocker/:/etc/flocker/:ro clusterhq/uft flockerctl --control-service={{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }} $@
+exec docker run --rm -i --workdir /etc/flocker -v /etc/flocker/:/etc/flocker/:ro clusterhq/uft flockerctl --control-service={{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }} $@
