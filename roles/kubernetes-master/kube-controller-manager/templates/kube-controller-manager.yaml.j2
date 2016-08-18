@@ -18,6 +18,19 @@ spec:
 {% if kubernetes.cloudProvider is defined and kubernetes.cloudProvider != "" %}
     - --cloud-provider={{ kubernetes.cloudProvider }}
 {% endif %}
+{% if custom.flocker_enabled == 'true' %}
+    env:
+    - name: FLOCKER_CONTROL_SERVICE_HOST
+      value: control-service
+    - name: FLOCKER_CONTROL_SERVICE_PORT
+      value: "4523"
+    - name: FLOCKER_CONTROL_SERVICE_CA_FILE
+      value: /etc/flocker/cluster.crt
+    - name: FLOCKER_CONTROL_SERVICE_CLIENT_KEY_FILE
+      value: /etc/flocker/kubelet.key
+    - name: FLOCKER_CONTROL_SERVICE_CLIENT_CERT_FILE
+      value: /etc/flocker/kubelet.crt
+{% endif %}
     livenessProbe:
       httpGet:
         host: 127.0.0.1
@@ -32,6 +45,11 @@ spec:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
       readOnly: true
+{% if custom.flocker_enabled == 'true' %}
+    - mountPath: /etc/flocker
+      name: flocker-certs-host
+      readOnly: true
+{% endif %}
   volumes:
   - hostPath:
       path: /etc/kubernetes/ssl
@@ -39,3 +57,8 @@ spec:
   - hostPath:
       path: /usr/share/ca-certificates
     name: ssl-certs-host
+{% if custom.flocker_enabled == 'true' %}
+  - hostPath:
+      path: /etc/flocker
+    name: flocker-certs-host
+{% endif %}

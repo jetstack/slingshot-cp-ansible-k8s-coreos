@@ -44,6 +44,19 @@
     dest: /etc/flocker/cluster.crt
   become: yes
 
+- name: copy kubelet.crt to the node
+  copy:
+    src: "{{ flocker_local_tempdir }}/kubelet.crt"
+    dest: /etc/flocker/kubelet.crt
+  become: yes
+
+- name: copy kubelet.key to the node
+  copy:
+    src: "{{ flocker_local_tempdir }}/kubelet.key"
+    dest: /etc/flocker/kubelet.key
+    mode: 0600
+  become: yes
+
 - include: configure_control_service.yml
   when: "'{{ flocker_control_service_groupname }}' in group_names"
 

@@ -1,6 +1,18 @@
 - name: create manifests directoy
   file: name=/etc/kubernetes/manifests state=directory
 
+- name: setup hosts entry for control-service
+  lineinfile:
+    dest: /etc/hosts
+    regexp: 'control-service$'
+    line: "{{ hostvars[groups['kubernetes-master'][0]]['privateIP'] }} control-service"
+    owner: root
+    group: root
+    mode: 0644
+    create: yes
+  become: yes
+  when: custom.flocker_enabled == 'true'
+
 - name: create kube-controller-manager pod manifest
   template: src=kube-controller-manager.yaml.j2 dest=/etc/kubernetes/manifests/kube-controller-manager.yaml
 
